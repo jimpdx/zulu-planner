@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+html {
+  font-size: 110%;
+}
+
+@theme {
+  --color-base: #101828;
+  --color-surface: #1e2939;
+  --color-input: #364153;
+  --color-primary: #364153;
+  --color-accent: #49a3ff;
+  --color-text: #99a1af;
+}
