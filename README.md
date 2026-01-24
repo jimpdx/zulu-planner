@@ -2,7 +2,7 @@
 
 A planning tool for VATSIM event organizers and controllers to coordinate ATC staffing across timezones. Computes coverage windows for facilities and shift schedules for controllers based on departure/arrival times — handling International Date Line crossings correctly. See it live at https://perflight.com/events.
 
-This is a planning tool, not a flight tracker. Everything is computed from user inputs.
+This is a planning tool, not a flight tracker. Everything is computed from user inputs. Plans can be shared via URL — click the Share button to save a snapshot and get a link anyone can open.
 
 ## Getting Started
 
@@ -19,7 +19,7 @@ Open the localhost URL shown in the terminal.
 npm run build
 ```
 
-Produces a static `dist/` folder that can be deployed anywhere (no backend required).
+Produces a static `dist/` folder. Plan sharing requires a Firebase project (see `docs/share-plan-feature.md` for setup).
 
 ## Deploying
 
@@ -45,6 +45,7 @@ All times are computed and stored in UTC. Local times are derived via Luxon's IA
 - Vite
 - Tailwind CSS v4
 - Luxon (timezone-aware date/time)
+- Firebase Firestore (plan sharing)
 - localStorage for persistence
 
 ## Theming
@@ -66,15 +67,21 @@ Edit the `@theme` block in `src/index.css` to change the color palette:
 ```
 src/
   components/
-    PlanInputs.tsx      — Scenario/date/time form
-    FacilitiesPanel.tsx — Facility CRUD + coverage display
+    PlanInputs.tsx       — Scenario/date/time form
+    FacilitiesPanel.tsx  — Facility CRUD + coverage display
     ControllersPanel.tsx — Controller CRUD + local shifts
-    Timeline.tsx        — Horizontal bar visualization
+    Timeline.tsx         — Horizontal bar visualization
+    ShareButton.tsx      — Save plan to Firestore + copy URL
   context/
-    PlanContext.tsx     — State management + localStorage
+    PlanContext.tsx      — State management + localStorage + shared plan loading
+  services/
+    sharePlan.ts         — Firestore save/load with validation
+  firebase.ts            — Firebase initialization
   utils/
-    coverage.ts        — Window computation + shift splitting
-    timezone.ts        — UTC-to-local formatting
-    timezoneList.ts    — Timezone picker options with offsets
-  types.ts             — TypeScript interfaces
+    coverage.ts          — Window computation + shift splitting
+    timezone.ts          — UTC-to-local formatting
+    timezoneList.ts      — Timezone picker options with offsets
+  types.ts               — TypeScript interfaces
+public/
+  .htaccess              — Apache rewrite for SPA routing
 ```

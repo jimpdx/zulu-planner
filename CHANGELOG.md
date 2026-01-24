@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.3
+
+Plan sharing and deployment improvements.
+
+- Share plans via URL (e.g., `https://perflight.com/events/c8fh23ds`) using Firebase Firestore
+- Share button in Plan Inputs header saves current plan and copies link to clipboard
+- Recipients can edit a shared plan and generate their own share link (gist-style)
+- Input validation and Firestore security rules to prevent malformed data
+- SPA routing via .htaccess for path-based share URLs
+- Build-time version injection into HTML meta tag
+- Google Analytics tracking
+- Fixed SFTP deploy configuration (context + remotePath)
+
 ## 1.1.2
 
 UI refinements and project housekeeping.
