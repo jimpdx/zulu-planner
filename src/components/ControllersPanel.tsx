@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { usePlan } from '../context/PlanContext'
-import { computeFacilityCoverage, splitIntoShifts } from '../utils/coverage'
+import { computeFacilityCoverage, splitIntoShifts, isValidTime } from '../utils/coverage'
 import { formatShiftLocal } from '../utils/timezone'
 import { timezones } from '../utils/timezoneList'
 import type { Controller } from '../types'
@@ -21,7 +21,7 @@ export function ControllersPanel() {
   const [editing, setEditing] = useState<Omit<Controller, 'id'> & { id?: string }>(emptyController)
   const [showForm, setShowForm] = useState(false)
 
-  const hasValidPlan = plan.baseDateUTC && plan.depStart && plan.depEnd && plan.flightDurationMinutes > 0
+  const hasValidPlan = plan.baseDateUTC && isValidTime(plan.depStart) && isValidTime(plan.depEnd) && plan.flightDurationMinutes > 0
 
   function handleSave() {
     if (!editing.name || !editing.timezone || !editing.facilityId) return

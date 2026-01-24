@@ -1,6 +1,12 @@
 import { DateTime } from 'luxon'
 import type { Plan, Facility, TimeWindow, ShiftBlock } from '../types'
 
+const TIME_RE = /^\d{2}:\d{2}$/
+
+export function isValidTime(value: string): boolean {
+  return TIME_RE.test(value)
+}
+
 export function computeDepartureWindow(plan: Plan): TimeWindow {
   const start = DateTime.fromISO(`${plan.baseDateUTC}T${plan.depStart}:00`, { zone: 'utc' })
   let end = DateTime.fromISO(`${plan.baseDateUTC}T${plan.depEnd}:00`, { zone: 'utc' })

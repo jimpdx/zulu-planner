@@ -1,5 +1,5 @@
 import { usePlan } from '../context/PlanContext'
-import { computeDepartureWindow, computeArrivalWindow } from '../utils/coverage'
+import { computeDepartureWindow, computeArrivalWindow, isValidTime } from '../utils/coverage'
 import { formatUtcWindow } from '../utils/timezone'
 
 export function PlanInputs() {
@@ -18,7 +18,7 @@ export function PlanInputs() {
     return digits.slice(0, 2) + ':' + digits.slice(2, 4)
   }
 
-  const hasValidInputs = plan.baseDateUTC && plan.depStart && plan.depEnd && plan.flightDurationMinutes > 0
+  const hasValidInputs = plan.baseDateUTC && isValidTime(plan.depStart) && isValidTime(plan.depEnd) && plan.flightDurationMinutes > 0
 
   let depDisplay = ''
   let arrDisplay = ''

@@ -1,12 +1,12 @@
 import { DateTime } from 'luxon'
 import { usePlan } from '../context/PlanContext'
-import { computeDepartureWindow, computeArrivalWindow, computeFacilityCoverage } from '../utils/coverage'
+import { computeDepartureWindow, computeArrivalWindow, computeFacilityCoverage, isValidTime } from '../utils/coverage'
 
 export function Timeline() {
   const { state } = usePlan()
   const { plan, facilities } = state
 
-  const hasValidPlan = plan.baseDateUTC && plan.depStart && plan.depEnd && plan.flightDurationMinutes > 0
+  const hasValidPlan = plan.baseDateUTC && isValidTime(plan.depStart) && isValidTime(plan.depEnd) && plan.flightDurationMinutes > 0
 
   if (!hasValidPlan) {
     return (
