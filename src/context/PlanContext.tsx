@@ -1,7 +1,9 @@
-import { createContext, useContext, useReducer, useEffect, type ReactNode } from 'react'
+import { createContext, useContext, useReducer, useEffect, useState, type ReactNode } from 'react'
 import type { PlanState, Plan, Facility, Controller } from '../types'
+import { loadPlan } from '../services/sharePlan'
 
 const STORAGE_KEY = 'zulu-event-planner'
+const BASE_PATH = '/events/'
 
 const defaultPlan: Plan = {
   name: '',
@@ -27,6 +29,13 @@ function loadState(): PlanState {
   return defaultState
 }
 
+function getSharedPlanId(): string | null {
+  const path = window.location.pathname
+  if (!path.startsWith(BASE_PATH)) return null
+  const id = path.slice(BASE_PATH.length).replace(/\/$/, '')
+  return id || null
+}
+
 type Action =
   | { type: 'UPDATE_PLAN'; payload: Partial<Plan> }
   | { type: 'ADD_FACILITY'; payload: Facility }
@@ -35,6 +44,7 @@ type Action =
   | { type: 'ADD_CONTROLLER'; payload: Controller }
   | { type: 'UPDATE_CONTROLLER'; payload: Controller }
   | { type: 'REMOVE_CONTROLLER'; payload: string }
+  | { type: 'LOAD_PLAN'; payload: PlanState }
   | { type: 'RESET' }
 
 function reducer(state: PlanState, action: Action): PlanState {
@@ -69,6 +79,8 @@ function reducer(state: PlanState, action: Action): PlanState {
         ...state,
         controllers: state.controllers.filter(c => c.id !== action.payload),
       }
+    case 'LOAD_PLAN':
+      return action.payload
     case 'RESET':
       return defaultState
     default:
@@ -85,10 +97,28 @@ const PlanContext = createContext<PlanContextValue | null>(null)
 
 export function PlanProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, undefined, loadState)
+  const [loading, setLoading] = useState(() => !!getSharedPlanId())
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-  }, [state])
+    const id = getSharedPlanId()
+    if (!id) return
+    loadPlan(id).then(plan => {
+      if (plan) {
+        dispatch({ type: 'LOAD_PLAN', payload: plan })
+      }
+      setLoading(false)
+    }).catch(() => setLoading(false))
+  }, [])
+
+  useEffect(() => {
+    if (!loading) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    }
+  }, [state, loading])
+
+  if (loading) {
+    return <div className="text-center text-text/60 py-12">Loading shared plan...</div>
+  }
 
   return (
     <PlanContext.Provider value={{ state, dispatch }}>

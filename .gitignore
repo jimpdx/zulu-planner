@@ -4,3 +4,5 @@ dist
 .vite
 .vscode*
 .claude*
+.env
+firebase.config.html
