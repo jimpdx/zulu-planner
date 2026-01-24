@@ -9,13 +9,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.0",
+    "dotenv": "^17.2.3",
+    "hono": "^4.11.5",
     "luxon": "^3.5.0",
+    "nanoid": "^5.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@hono/vite-dev-server": "^0.24.1",
     "@tailwindcss/vite": "^4.0.0",
     "@types/luxon": "^3.4.0",
+    "@types/node": "^25.0.10",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.0",

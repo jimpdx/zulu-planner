@@ -3,6 +3,7 @@ import { PlanInputs } from './components/PlanInputs'
 import { FacilitiesPanel } from './components/FacilitiesPanel'
 import { ControllersPanel } from './components/ControllersPanel'
 import { Timeline } from './components/Timeline'
+import { SyncPanel } from './components/SyncPanel'
 
 function App() {
   return (
@@ -12,6 +13,8 @@ function App() {
           <h1 className="text-2xl font-bold text-text">VATSIM Zulu Event Planner</h1>
           <p className="text-sm text-accent/70">A planning tool for ATC coverage across timezones</p>
         </header>
+
+        <SyncPanel />
 
         <PlanInputs />
 

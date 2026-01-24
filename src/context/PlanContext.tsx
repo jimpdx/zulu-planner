@@ -36,6 +36,7 @@ type Action =
   | { type: 'UPDATE_CONTROLLER'; payload: Controller }
   | { type: 'REMOVE_CONTROLLER'; payload: string }
   | { type: 'RESET' }
+  | { type: 'LOAD_STATE'; payload: PlanState }
 
 function reducer(state: PlanState, action: Action): PlanState {
   switch (action.type) {
@@ -71,6 +72,8 @@ function reducer(state: PlanState, action: Action): PlanState {
       }
     case 'RESET':
       return defaultState
+    case 'LOAD_STATE':
+      return action.payload
     default:
       return state
   }
