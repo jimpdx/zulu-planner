@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.2
+
+UI refinements and project housekeeping.
+
+- Added Lexend font for improved readability
+- Updated header styling
+- Renamed "Controller Staffing" to "Coverage/Shift Planning"
+- Clarified form labels and placeholders
+- Added docs/ directory with story-based feature planning
+
 ## 1.1.1
 
 Bug fix.
