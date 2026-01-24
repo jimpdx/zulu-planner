@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer, useEffect, type ReactNode } from 'react'
 import type { PlanState, Plan, Facility, Controller } from '../types'
 
-const STORAGE_KEY = 'vatsim-pacific-planner'
+const STORAGE_KEY = 'zulu-event-planner'
 
 const defaultPlan: Plan = {
   name: '',

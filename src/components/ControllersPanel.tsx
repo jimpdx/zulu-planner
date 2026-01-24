@@ -47,10 +47,10 @@ export function ControllersPanel() {
   return (
     <div className="bg-surface rounded-lg p-4">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-semibold text-accent">Controllers</h2>
+        <h2 className="text-lg font-semibold text-accent">Controller Staffing</h2>
         <button
           onClick={() => { setEditing(emptyController); setShowForm(!showForm) }}
-          className="text-sm bg-accent text-base hover:bg-accent/80 px-3 py-1 rounded transition-colors"
+          className="text-sm bg-blue-700 text-white hover:bg-blue-600 px-3 py-1 rounded transition-colors"
         >
           {showForm ? 'Cancel' : '+ Add'}
         </button>
@@ -64,7 +64,7 @@ export function ControllersPanel() {
               type="text"
               value={editing.name}
               onChange={e => setEditing({ ...editing, name: e.target.value })}
-              placeholder="e.g., Jim"
+              placeholder="Rowan"
               className="w-full bg-input border border-primary/50 rounded px-2 py-1 text-sm text-text"
             />
           </div>

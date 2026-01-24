@@ -23,13 +23,13 @@ export function Timeline() {
   // Compute all windows
   const windows: { label: string; start: DateTime; end: DateTime; color: string }[] = [
     {
-      label: 'Departure',
+      label: 'Departures',
       start: DateTime.fromISO(dep.start, { zone: 'utc' }),
       end: DateTime.fromISO(dep.end, { zone: 'utc' }),
       color: 'bg-green-500',
     },
     {
-      label: 'Arrival',
+      label: 'Arrivals',
       start: DateTime.fromISO(arr.start, { zone: 'utc' }),
       end: DateTime.fromISO(arr.end, { zone: 'utc' }),
       color: 'bg-amber-500',
@@ -51,21 +51,27 @@ export function Timeline() {
   // Find overall span
   const allStarts = windows.map(w => w.start)
   const allEnds = windows.map(w => w.end)
-  const earliest = DateTime.min(...allStarts)
-  const latest = DateTime.max(...allEnds)
+  const earliest = DateTime.min(...allStarts)!
+  const latest = DateTime.max(...allEnds)!
   const totalMinutes = latest.diff(earliest, 'minutes').minutes
 
   if (totalMinutes <= 0) return null
 
+  // Pad the timeline range so bars don't sit flush at edges
+  const paddingMinutes = Math.max(totalMinutes * 0.05, 15)
+  const timelineStart = earliest.minus({ minutes: paddingMinutes })
+  const timelineEnd = latest.plus({ minutes: paddingMinutes })
+  const timelineMinutes = timelineEnd.diff(timelineStart, 'minutes').minutes
+
   function getPosition(dt: DateTime) {
-    const offset = dt.diff(earliest, 'minutes').minutes
-    return (offset / totalMinutes) * 100
+    const offset = dt.diff(timelineStart, 'minutes').minutes
+    return (offset / timelineMinutes) * 100
   }
 
   // Generate hour markers
   const hourMarkers: { label: string; position: number }[] = []
-  let marker = earliest.startOf('hour').plus({ hours: 1 })
-  while (marker < latest) {
+  let marker = timelineStart.startOf('hour').plus({ hours: 1 })
+  while (marker < timelineEnd) {
     hourMarkers.push({
       label: marker.toFormat('HH:mm') + 'Z',
       position: getPosition(marker),
@@ -97,13 +103,13 @@ export function Timeline() {
           const width = getPosition(w.end) - left
 
           return (
-            <div key={i} className="relative h-7 flex items-center">
+            <div key={i} className="relative h-9 flex items-center">
               <div className="absolute inset-0 bg-base rounded" />
               <div
-                className={`absolute h-5 rounded ${w.color} opacity-80 flex items-center px-1`}
+                className={`absolute h-7 rounded ${w.color} opacity-80 flex items-center px-2`}
                 style={{ left: `${left}%`, width: `${width}%` }}
               >
-                <span className="text-xs font-medium text-white truncate">
+                <span className="text-sm font-medium text-white truncate">
                   {w.label}
                 </span>
               </div>

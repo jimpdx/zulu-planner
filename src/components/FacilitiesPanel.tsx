@@ -52,7 +52,7 @@ export function FacilitiesPanel() {
         <h2 className="text-lg font-semibold text-accent">Facilities</h2>
         <button
           onClick={() => { setEditing(emptyFacility); setShowForm(!showForm) }}
-          className="text-sm bg-accent text-base hover:bg-accent/80 px-3 py-1 rounded transition-colors"
+          className="text-sm bg-blue-700 text-white hover:bg-blue-600 px-3 py-1 rounded transition-colors"
         >
           {showForm ? 'Cancel' : '+ Add'}
         </button>
@@ -66,7 +66,7 @@ export function FacilitiesPanel() {
               type="text"
               value={editing.name}
               onChange={e => setEditing({ ...editing, name: e.target.value })}
-              placeholder="e.g., Hong Kong (VHHH)"
+              placeholder="Blue Center (ZBX)"
               className="w-full bg-input border border-primary/50 rounded px-2 py-1 text-sm text-text"
             />
           </div>
@@ -145,28 +145,34 @@ export function FacilitiesPanel() {
 
             return (
               <div key={facility.id} className="p-3 bg-base rounded border border-primary/50">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="font-medium text-sm text-text">{facility.name}</div>
-                    <div className="text-xs text-accent/70">
-                      {facility.timezone} | {facility.type} | Lead: {facility.leadMinutes}m, Lag: {facility.lagMinutes}m
-                    </div>
+                <div className="flex items-center justify-between">
+                  <div className="font-medium text-sm text-text truncate">
+                    <span className="text-accent">{facility.name}</span>
+                    {' '} {facility.type}
+                    {' '}<span className="text-accent/60">{facility.timezone}</span>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 shrink-0 ml-2">
                     <button onClick={() => handleEdit(facility)} className="text-xs text-accent hover:text-text">Edit</button>
                     <button onClick={() => handleRemove(facility.id)} className="text-xs text-red-400 hover:text-red-300">Remove</button>
                   </div>
                 </div>
+                {(facility.leadMinutes > 0 || facility.lagMinutes > 0) && (
+                  <div className="text-sm text-text/70">
+                    {facility.leadMinutes > 0 && facility.lagMinutes > 0
+                      ? `Leading by ${facility.leadMinutes} and lagging by ${facility.lagMinutes} minutes`
+                      : facility.leadMinutes > 0
+                        ? `Leading by ${facility.leadMinutes} minutes`
+                        : `Lagging by ${facility.lagMinutes} minutes`}
+                  </div>
+                )}
                 {coverage && (
-                  <div className="mt-2 text-xs space-y-0.5">
-                    <div><span className="text-accent/50">UTC: </span><span className="font-mono text-green-400">{coverage.utc}</span></div>
-                    <div>
-                      <span className="text-accent/50">Local: </span>
-                      <span className={`font-mono ${coverage.datesDiffer ? 'text-amber-400' : 'text-accent'}`}>
-                        {coverage.local}
-                      </span>
-                      {coverage.datesDiffer && <span className="ml-1 text-amber-400/70 text-xs">(date differs from UTC)</span>}
-                    </div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <span className="inline-flex rounded-full px-4 py-1 bg-accent/20 text-sm font-mono text-green-400">
+                      UTC: {coverage.utc}
+                    </span>
+                    <span className={`inline-flex rounded-full px-4 py-1 bg-accent/20 text-sm font-mono ${coverage.datesDiffer ? 'text-amber-400' : 'text-accent'}`}>
+                      Local: {coverage.local}
+                    </span>
                   </div>
                 )}
               </div>

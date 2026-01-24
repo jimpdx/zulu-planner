@@ -1,6 +1,6 @@
 # VATSIM Zulu Event Planner
 
-A planning tool for VATSIM event organizers and controllers to coordinate ATC staffing across timezones. Computes coverage windows for facilities and shift schedules for controllers based on departure/arrival times — handling International Date Line crossings correctly.
+A planning tool for VATSIM event organizers and controllers to coordinate ATC staffing across timezones. Computes coverage windows for facilities and shift schedules for controllers based on departure/arrival times — handling International Date Line crossings correctly. See it live at https://perflight.com/zulu-event-planner/.
 
 This is a planning tool, not a flight tracker. Everything is computed from user inputs.
 
@@ -54,8 +54,8 @@ Edit the `@theme` block in `src/index.css` to change the color palette:
 ```css
 @theme {
   --color-base: #457b9d;
-  --color-surface: #354F52;
-  --color-primary: #52796F;
+  --color-surface: #354f52;
+  --color-primary: #52796f;
   --color-accent: #a8dadc;
   --color-text: #f1faee;
 }

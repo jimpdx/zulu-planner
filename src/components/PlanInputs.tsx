@@ -10,6 +10,14 @@ export function PlanInputs() {
     dispatch({ type: 'UPDATE_PLAN', payload })
   }
 
+  function formatTime(value: string): string {
+    const digits = value.replace(/\D/g, '')
+    if (digits.length === 0) return ''
+    if (digits.length <= 2) return digits.padStart(2, '0') + ':00'
+    if (digits.length === 3) return '0' + digits[0] + ':' + digits.slice(1)
+    return digits.slice(0, 2) + ':' + digits.slice(2, 4)
+  }
+
   const hasValidInputs = plan.baseDateUTC && plan.depStart && plan.depEnd && plan.flightDurationMinutes > 0
 
   let depDisplay = ''
@@ -34,7 +42,7 @@ export function PlanInputs() {
             type="text"
             value={plan.name}
             onChange={e => update({ name: e.target.value })}
-            placeholder="e.g., VHHH → PGUM"
+            placeholder="KABC → CXYZ"
             className="w-full bg-input border border-primary/50 rounded px-3 py-1.5 text-sm text-text"
           />
         </div>
@@ -45,7 +53,7 @@ export function PlanInputs() {
             type="date"
             value={plan.baseDateUTC}
             onChange={e => update({ baseDateUTC: e.target.value })}
-            className="w-full bg-input border border-primary/50 rounded px-3 py-1.5 text-sm text-text"
+            className="w-full bg-input border border-primary/50 rounded px-3 py-1.5 text-sm text-text [color-scheme:dark]"
           />
         </div>
 
@@ -56,8 +64,8 @@ export function PlanInputs() {
               type="text"
               value={plan.depStart}
               onChange={e => update({ depStart: e.target.value })}
-              placeholder="HH:mm"
-              pattern="[0-2]\d:[0-5]\d"
+              onBlur={e => update({ depStart: formatTime(e.target.value) })}
+              placeholder="HHmm"
               maxLength={5}
               className="w-full bg-input border border-primary/50 rounded px-3 py-1.5 text-sm font-mono text-text"
             />
@@ -72,8 +80,8 @@ export function PlanInputs() {
               type="text"
               value={plan.depEnd}
               onChange={e => update({ depEnd: e.target.value })}
-              placeholder="HH:mm"
-              pattern="[0-2]\d:[0-5]\d"
+              onBlur={e => update({ depEnd: formatTime(e.target.value) })}
+              placeholder="HHmm"
               maxLength={5}
               className="w-full bg-input border border-primary/50 rounded px-3 py-1.5 text-sm font-mono text-text"
             />
