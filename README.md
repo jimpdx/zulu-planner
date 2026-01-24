@@ -1,6 +1,6 @@
-# VATSIM Zulu Event Planner
+# PERFLIGHT Event Planner
 
-A planning tool for VATSIM event organizers and controllers to coordinate ATC staffing across timezones. Computes coverage windows for facilities and shift schedules for controllers based on departure/arrival times — handling International Date Line crossings correctly. See it live at https://perflight.com/zulu-event-planner/.
+A planning tool for VATSIM event organizers and controllers to coordinate ATC staffing across timezones. Computes coverage windows for facilities and shift schedules for controllers based on departure/arrival times — handling International Date Line crossings correctly. See it live at https://perflight.com/events.
 
 This is a planning tool, not a flight tracker. Everything is computed from user inputs.
 
