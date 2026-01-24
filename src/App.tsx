@@ -45,6 +45,10 @@ function App() {
         </div>
 
         <Timeline />
+
+        <footer className="text-center text-xs text-text/40 py-4">
+          v1.1.0
+        </footer>
       </div>
     </PlanProvider>
   )
