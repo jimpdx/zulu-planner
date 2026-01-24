@@ -47,7 +47,7 @@ export function ControllersPanel() {
   return (
     <div className="bg-surface rounded-lg p-4">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-semibold text-accent">Controller Staffing</h2>
+        <h2 className="text-lg font-semibold text-accent">Coverage/Shift Planning</h2>
         <button
           onClick={() => { setEditing(emptyController); setShowForm(!showForm) }}
           className="text-sm bg-blue-700 text-white hover:bg-blue-600 px-3 py-1 rounded transition-colors"
@@ -59,12 +59,12 @@ export function ControllersPanel() {
       {showForm && (
         <div className="mb-4 p-3 bg-base rounded border border-primary/50 grid grid-cols-1 md:grid-cols-4 gap-2">
           <div>
-            <label className="block text-xs text-text/70 mb-1">Name / Handle</label>
+            <label className="block text-xs text-text/70 mb-1">Designation</label>
             <input
               type="text"
               value={editing.name}
               onChange={e => setEditing({ ...editing, name: e.target.value })}
-              placeholder="Rowan"
+              placeholder="Alpha, West, Joe"
               className="w-full bg-input border border-primary/50 rounded px-2 py-1 text-sm text-text"
             />
           </div>
@@ -75,7 +75,7 @@ export function ControllersPanel() {
               onChange={e => setEditing({ ...editing, timezone: e.target.value })}
               className="w-full bg-input border border-primary/50 rounded px-2 py-1 text-sm text-text"
             >
-              <option value="">Select timezone...</option>
+              <option value="">Select one</option>
               {timezones.map(tz => (
                 <option key={tz.value} value={tz.value}>{tz.label}</option>
               ))}
@@ -88,7 +88,7 @@ export function ControllersPanel() {
               onChange={e => setEditing({ ...editing, facilityId: e.target.value })}
               className="w-full bg-input border border-primary/50 rounded px-2 py-1 text-sm text-text"
             >
-              <option value="">Select facility...</option>
+              <option value="">Select one</option>
               {facilities.map(f => (
                 <option key={f.id} value={f.id}>{f.name}</option>
               ))}

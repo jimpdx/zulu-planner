@@ -77,7 +77,7 @@ export function FacilitiesPanel() {
               onChange={e => setEditing({ ...editing, timezone: e.target.value })}
               className="w-full bg-input border border-primary/50 rounded px-2 py-1 text-sm text-text"
             >
-              <option value="">Select timezone...</option>
+              <option value="">Select one</option>
               {timezones.map(tz => (
                 <option key={tz.value} value={tz.value}>{tz.label}</option>
               ))}
