@@ -2,6 +2,8 @@
 
 Share a plan via URL like `https://perflight.com/events/c8fh23ds`. Recipients can view, edit, and generate their own share link (like a gist).
 
+Status: Completed
+
 ## Prerequisites
 
 ### 1. Create Firebase Project
@@ -66,8 +68,8 @@ npm install firebase
 #### `src/firebase.ts`
 
 ```typescript
-import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -76,46 +78,46 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
-}
+};
 
-const app = initializeApp(firebaseConfig)
-export const db = getFirestore(app)
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 ```
 
 #### `src/services/sharePlan.ts`
 
 ```typescript
-import { doc, setDoc, getDoc } from 'firebase/firestore'
-import { db } from '../firebase'
-import type { PlanState } from '../types'
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import type { PlanState } from "../types";
 
 function generateId(): string {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
-  let id = ''
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let id = "";
   for (let i = 0; i < 8; i++) {
-    id += chars[Math.floor(Math.random() * chars.length)]
+    id += chars[Math.floor(Math.random() * chars.length)];
   }
-  return id
+  return id;
 }
 
 export async function savePlan(state: PlanState): Promise<string> {
-  const id = generateId()
-  await setDoc(doc(db, 'plans', id), {
+  const id = generateId();
+  await setDoc(doc(db, "plans", id), {
     ...state,
     createdAt: new Date().toISOString(),
-  })
-  return id
+  });
+  return id;
 }
 
 export async function loadPlan(id: string): Promise<PlanState | null> {
-  const snap = await getDoc(doc(db, 'plans', id))
-  if (!snap.exists()) return null
-  const data = snap.data()
+  const snap = await getDoc(doc(db, "plans", id));
+  if (!snap.exists()) return null;
+  const data = snap.data();
   return {
     plan: data.plan,
     facilities: data.facilities,
     controllers: data.controllers,
-  }
+  };
 }
 ```
 

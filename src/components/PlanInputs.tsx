@@ -4,7 +4,7 @@ import { formatUtcWindow } from '../utils/timezone'
 import { ShareButton } from './ShareButton'
 
 export function PlanInputs() {
-  const { state, dispatch } = usePlan()
+  const { state, dispatch, isSharedPlan } = usePlan()
   const { plan } = state
 
   const update = (payload: Partial<typeof plan>) => {
@@ -36,7 +36,18 @@ export function PlanInputs() {
     <div className="bg-surface rounded-lg p-4">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-lg font-semibold text-accent">Plan Inputs</h2>
-        <ShareButton />
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              dispatch({ type: 'RESET' })
+              window.history.pushState(null, '', '/events/')
+            }}
+            className="text-sm bg-gray-600 text-white hover:bg-gray-500 px-3 py-1 rounded transition-colors"
+          >
+            New Plan
+          </button>
+          <ShareButton />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -58,6 +69,31 @@ export function PlanInputs() {
             value={plan.baseDateUTC}
             onChange={e => update({ baseDateUTC: e.target.value })}
             className="w-full bg-input border border-primary/50 rounded px-3 py-1.5 text-sm text-text [color-scheme:dark]"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm text-text/70 mb-1">
+            {isSharedPlan ? 'Shared by' : 'Created by'}
+          </label>
+          <input
+            type="text"
+            value={plan.createdBy}
+            onChange={e => update({ createdBy: e.target.value.slice(0, 50) })}
+            placeholder="Your Username / Facility"
+            maxLength={50}
+            className="w-full bg-input border border-primary/50 rounded px-3 py-1.5 text-sm text-text"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm text-text/70 mb-1">Average Flight Duration (minutes)</label>
+          <input
+            type="number"
+            value={plan.flightDurationMinutes}
+            onChange={e => update({ flightDurationMinutes: parseInt(e.target.value) || 0 })}
+            min={0}
+            className="w-full bg-input border border-primary/50 rounded px-3 py-1.5 text-sm text-text"
           />
         </div>
 
@@ -91,17 +127,6 @@ export function PlanInputs() {
             />
             <span className="text-sm font-bold text-accent">Z</span>
           </div>
-        </div>
-
-        <div>
-          <label className="block text-sm text-text/70 mb-1">Flight Duration (minutes)</label>
-          <input
-            type="number"
-            value={plan.flightDurationMinutes}
-            onChange={e => update({ flightDurationMinutes: parseInt(e.target.value) || 0 })}
-            min={0}
-            className="w-full bg-input border border-primary/50 rounded px-3 py-1.5 text-sm text-text"
-          />
         </div>
 
         <div>

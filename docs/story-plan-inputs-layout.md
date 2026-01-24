@@ -1,5 +1,7 @@
 # Story: Reorganize Plan Inputs Layout
 
+Status: Completed
+
 ## Summary
 
 Move "Default Shift Length" from the left column (row 4) to the right column, and fill the vacated left-column slot with a new metadata field.
@@ -8,12 +10,12 @@ Move "Default Shift Length" from the left column (row 4) to the right column, an
 
 The Plan Inputs panel uses a 2-column grid with 7 fields:
 
-| Left | Right |
-|------|-------|
-| Event Name | Event Date |
-| Departure Start | Departure End |
-| Flight Duration | Arrival Offset |
-| Default Shift Length | *(empty)* |
+| Left                 | Right          |
+| -------------------- | -------------- |
+| Event Name           | Event Date     |
+| Departure Start      | Departure End  |
+| Flight Duration      | Arrival Offset |
+| Default Shift Length | _(empty)_      |
 
 "Default Shift Length" is a shift-shaping parameter that conceptually belongs more with Coverage/Shift Planning than with the core event timing inputs.
 
@@ -21,12 +23,12 @@ The Plan Inputs panel uses a 2-column grid with 7 fields:
 
 Move "Default Shift Length" to the right column of row 4, and add a new field to the left column:
 
-| Left | Right |
-|------|-------|
-| Event Name | Event Date |
-| Departure Start | Departure End |
-| Flight Duration | Arrival Offset |
-| *(new field)* | Default Shift Length |
+| Left            | Right                |
+| --------------- | -------------------- |
+| Event Name      | Event Date           |
+| Departure Start | Departure End        |
+| Flight Duration | Arrival Offset       |
+| _(new field)_   | Default Shift Length |
 
 ## Candidate Fields for the Left Column
 

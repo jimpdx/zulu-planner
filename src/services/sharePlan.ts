@@ -15,6 +15,7 @@ export async function savePlan(state: PlanState): Promise<string> {
   const id = generateId()
   await setDoc(doc(db, 'plans', id), {
     ...state,
+    sharedBy: (state.plan.createdBy || '').slice(0, 50),
     createdAt: new Date().toISOString(),
   })
   return id
@@ -40,8 +41,9 @@ export async function loadPlan(id: string): Promise<PlanState | null> {
   if (!/^[a-z0-9]{1,20}$/.test(id)) return null
   const snap = await getDoc(doc(db, 'plans', id))
   if (!snap.exists()) return null
+  const sharedBy = typeof snap.data().sharedBy === 'string' ? snap.data().sharedBy : ''
   const data = {
-    plan: snap.data().plan,
+    plan: { ...snap.data().plan, createdBy: sharedBy },
     facilities: snap.data().facilities,
     controllers: snap.data().controllers,
   }

@@ -7,6 +7,7 @@ const BASE_PATH = '/events/'
 
 const defaultPlan: Plan = {
   name: '',
+  createdBy: '',
   baseDateUTC: '',
   depStart: '11:00',
   depEnd: '15:00',
@@ -91,6 +92,7 @@ function reducer(state: PlanState, action: Action): PlanState {
 interface PlanContextValue {
   state: PlanState
   dispatch: React.Dispatch<Action>
+  isSharedPlan: boolean
 }
 
 const PlanContext = createContext<PlanContextValue | null>(null)
@@ -98,6 +100,7 @@ const PlanContext = createContext<PlanContextValue | null>(null)
 export function PlanProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, undefined, loadState)
   const [loading, setLoading] = useState(() => !!getSharedPlanId())
+  const [isSharedPlan, setIsSharedPlan] = useState(false)
 
   useEffect(() => {
     const id = getSharedPlanId()
@@ -105,6 +108,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     loadPlan(id).then(plan => {
       if (plan) {
         dispatch({ type: 'LOAD_PLAN', payload: plan })
+        setIsSharedPlan(true)
       }
       setLoading(false)
     }).catch(() => setLoading(false))
@@ -121,7 +125,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <PlanContext.Provider value={{ state, dispatch }}>
+    <PlanContext.Provider value={{ state, dispatch, isSharedPlan }}>
       {children}
     </PlanContext.Provider>
   )

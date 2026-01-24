@@ -1,12 +1,18 @@
-import { PlanProvider } from './context/PlanContext'
+import { PlanProvider, usePlan } from './context/PlanContext'
 import { PlanInputs } from './components/PlanInputs'
 import { FacilitiesPanel } from './components/FacilitiesPanel'
 import { ControllersPanel } from './components/ControllersPanel'
 import { Timeline } from './components/Timeline'
 
-function App() {
+function AppContent() {
+  const { dispatch } = usePlan()
+
+  function handleReset() {
+    dispatch({ type: 'RESET' })
+    window.history.pushState(null, '', '/events/')
+  }
+
   return (
-    <PlanProvider>
       <div className="max-w-6xl mx-auto p-4 space-y-4">
         <header className="relative text-center mb-6">
           <div className="absolute top-0 right-0 flex items-center gap-3">
@@ -33,7 +39,12 @@ function App() {
               </svg>
             </a>
           </div>
-          <h1 className="text-3xl font-bold text-text" style={{ fontFamily: "'Lexend', system-ui, sans-serif" }}><span style={{ color: 'rgb(255, 149, 0)' }}>PERF</span><span style={{ color: 'rgb(0, 157, 213)' }}>LIGHT</span> Event Planner</h1>
+          <h1
+            onClick={handleReset}
+            className="text-3xl font-bold text-text cursor-pointer hover:opacity-80 transition-opacity"
+            style={{ fontFamily: "'Lexend', system-ui, sans-serif" }}
+            title="Start a new plan"
+          ><span style={{ color: 'rgb(255, 149, 0)' }}>PERF</span><span style={{ color: 'rgb(0, 157, 213)' }}>LIGHT</span> Event Planner</h1>
           <p className="text-m text-brand/70">A planning tool for VATSIM ATC coverage across timezones</p>
         </header>
 
@@ -47,9 +58,16 @@ function App() {
         <Timeline />
 
         <footer className="text-center text-xs text-text/40 py-4">
-          v1.1.3
+          v1.2.0
         </footer>
       </div>
+  )
+}
+
+function App() {
+  return (
+    <PlanProvider>
+      <AppContent />
     </PlanProvider>
   )
 }

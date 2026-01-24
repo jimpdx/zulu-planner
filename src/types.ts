@@ -2,6 +2,7 @@ export type FacilityType = 'DEPARTURE' | 'ARRIVAL' | 'ENROUTE'
 
 export interface Plan {
   name: string
+  createdBy: string
   baseDateUTC: string // YYYY-MM-DD
   depStart: string // HH:mm
   depEnd: string // HH:mm

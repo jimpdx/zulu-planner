@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0
+
+New Plan reset, navigation, and shared-by attribution.
+
+- Clickable header title resets to a blank plan and returns to `/events/`
+- "New Plan" button in Plan Inputs header for explicit reset
+- Header shows pointer cursor and hover feedback as a navigation cue
+- "Created by" field on the plan form, stored as `sharedBy` in Firestore when sharing
+- Recipients see the field labeled "Shared by" with the sharer's name pre-populated
+- Rearranged Plan Inputs column layout for better grouping
+
 ## 1.1.3
 
 Plan sharing and deployment improvements.
