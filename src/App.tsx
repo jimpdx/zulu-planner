@@ -33,8 +33,8 @@ function App() {
               </svg>
             </a>
           </div>
-          <h1 className="text-3xl font-bold text-text">PERFLIGHT Event Planner</h1>
-          <p className="text-m text-accent/70">A planning tool for VATSIM ATC coverage across timezones</p>
+          <h1 className="text-3xl font-bold text-text" style={{ fontFamily: "'Lexend', system-ui, sans-serif" }}><span style={{ color: 'rgb(255, 149, 0)' }}>PERF</span><span style={{ color: 'rgb(0, 157, 213)' }}>LIGHT</span> Event Planner</h1>
+          <p className="text-m text-brand/70">A planning tool for VATSIM ATC coverage across timezones</p>
         </header>
 
         <PlanInputs />
