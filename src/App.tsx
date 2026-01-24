@@ -47,7 +47,7 @@ function App() {
         <Timeline />
 
         <footer className="text-center text-xs text-text/40 py-4">
-          v1.1.0
+          v1.1.1
         </footer>
       </div>
     </PlanProvider>

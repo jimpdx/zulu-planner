@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.1
+
+Bug fix.
+
+- Fixed crash when typing partial time values in departure inputs (invalid Luxon DateTime from incomplete HH:mm strings)
+- Deployment path updated to /events/
+
 ## 1.1.0
 
 UI polish and usability improvements.
