@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.1
+
+Timezone picker improvements.
+
+- Expanded timezone list to cover every main UTC offset from -11 to +13
+- Added missing offsets: UTC+2 (Cairo), UTC+3 (Moscow), UTC+4 (Dubai), UTC+5 (Karachi), UTC+6 (Dhaka), UTC-1 (Cape Verde), UTC-3 (São Paulo), UTC-4 (Halifax)
+- Removed duplicate entries sharing the same offset (e.g. Vancouver/Los Angeles, Toronto/New York, Paris/Berlin)
+- Reduced list from 36 entries to 28 with no gaps in coverage
+
 ## 1.2.0
 
 New Plan reset, navigation, and shared-by attribution.
