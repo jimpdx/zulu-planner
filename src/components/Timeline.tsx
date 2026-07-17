@@ -20,16 +20,18 @@ export function Timeline() {
   const dep = computeDepartureWindow(plan)
   const arr = computeArrivalWindow(plan)
 
-  // Compute all windows
-  const windows: { label: string; start: DateTime; end: DateTime; color: string }[] = [
+  // Compute all windows. `timezone` is set only for facility bars, so they can
+  // show their own local coverage range; the generic Departures/Arrivals bars
+  // have no single zone and stay UTC-only.
+  const windows: { label: string; start: DateTime; end: DateTime; color: string; timezone?: string }[] = [
     {
-      label: 'Departures',
+      label: 'Departure Window',
       start: DateTime.fromISO(dep.start, { zone: 'utc' }),
       end: DateTime.fromISO(dep.end, { zone: 'utc' }),
       color: 'bg-green-500',
     },
     {
-      label: 'Arrivals',
+      label: 'Arrival Window',
       start: DateTime.fromISO(arr.start, { zone: 'utc' }),
       end: DateTime.fromISO(arr.end, { zone: 'utc' }),
       color: 'bg-amber-500',
@@ -38,14 +40,24 @@ export function Timeline() {
 
   for (const facility of facilities) {
     try {
-      const cov = computeFacilityCoverage(facility, plan)
+      const cov = computeFacilityCoverage(facility, plan, facilities)
       windows.push({
         label: facility.name,
         start: DateTime.fromISO(cov.start, { zone: 'utc' }),
         end: DateTime.fromISO(cov.end, { zone: 'utc' }),
         color: facility.type === 'DEPARTURE' ? 'bg-green-600' : facility.type === 'ARRIVAL' ? 'bg-amber-600' : 'bg-purple-600',
+        timezone: facility.timezone,
       })
     } catch { /* skip invalid */ }
+  }
+
+  // Local coverage range for a facility bar, e.g. "1500-2100 local".
+  function localRange(w: { start: DateTime; end: DateTime; timezone?: string }): string | null {
+    if (!w.timezone) return null
+    const s = w.start.setZone(w.timezone)
+    const e = w.end.setZone(w.timezone)
+    if (!s.isValid || !e.isValid) return null
+    return `${s.toFormat('HHmm')}-${e.toFormat('HHmm')} local`
   }
 
   // Find overall span
@@ -111,6 +123,10 @@ export function Timeline() {
               >
                 <span className="text-sm font-medium text-white truncate">
                   {w.label}
+                  {(() => {
+                    const range = localRange(w)
+                    return range ? <span className="font-normal text-white/80"> ({range})</span> : null
+                  })()}
                 </span>
               </div>
             </div>

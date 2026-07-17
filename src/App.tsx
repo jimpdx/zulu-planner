@@ -57,7 +57,7 @@ function AppContent() {
         <Timeline />
 
         <footer className="text-center text-xs text-text/40 py-4">
-          v1.3.0
+          v1.4.0
         </footer>
       </div>
   )

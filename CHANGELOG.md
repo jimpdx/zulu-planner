@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0
+
+Timeline readability, enroute sectors, and input safeguards.
+
+- Enroute facilities now split the cruise into sequential sectors (in add-order) instead of all sharing one fixed 20-80% slice: the first sector overlaps the departure phase, the last overlaps the arrival phase, and adjacent sectors overlap at the mid-cruise handoff
+- Timeline facility bars now show each facility's local coverage range inline (e.g. `ZAK (1500-2100 local)`), translated from Zulu to the facility's own timezone
+- Renamed the top two timeline bars to "Departure Window" and "Arrival Window" for clarity
+- Warn when a departure window exceeds 12 hours (usually a start/end typo that triggers an unintended midnight rollover); the plan still computes, the warning is advisory only
+
 ## 1.3.0
 
 Shared-plan persistence fixes.

@@ -3,8 +3,19 @@ import type { Plan, Facility, TimeWindow, ShiftBlock } from '../types'
 
 const TIME_RE = /^\d{2}:\d{2}$/
 
+// Departure windows longer than this are almost always a typo (e.g. start/end
+// swapped, producing an unintended midnight rollover). We warn, not block —
+// a genuine long or midnight-crossing window is still valid.
+export const LONG_DEP_WINDOW_MINUTES = 720 // 12h
+
 export function isValidTime(value: string): boolean {
   return TIME_RE.test(value)
+}
+
+export function windowDurationMinutes(window: TimeWindow): number {
+  const start = DateTime.fromISO(window.start, { zone: 'utc' })
+  const end = DateTime.fromISO(window.end, { zone: 'utc' })
+  return end.diff(start, 'minutes').minutes
 }
 
 export function computeDepartureWindow(plan: Plan): TimeWindow {
@@ -35,7 +46,11 @@ export function computeArrivalWindow(plan: Plan): TimeWindow {
   }
 }
 
-export function computeFacilityCoverage(facility: Facility, plan: Plan): TimeWindow {
+export function computeFacilityCoverage(
+  facility: Facility,
+  plan: Plan,
+  facilities?: Facility[],
+): TimeWindow {
   const dep = computeDepartureWindow(plan)
   const arr = computeArrivalWindow(plan)
 
@@ -49,11 +64,23 @@ export function computeFacilityCoverage(facility: Facility, plan: Plan): TimeWin
     baseStart = DateTime.fromISO(arr.start, { zone: 'utc' })
     baseEnd = DateTime.fromISO(arr.end, { zone: 'utc' })
   } else {
-    // ENROUTE: cover from dep start + 20% to dep start + 80% of flight
+    // ENROUTE: divide the cruise into equal sequential sectors, one per enroute
+    // facility (in add-order). Sector i of N spans cruise-fraction [i/N, (i+1)/N].
+    // The start of each sector is anchored on the departure window START and the
+    // end on the departure window END, so a sector widens with the departure
+    // window. The first sector therefore begins at the departure phase (overlaps
+    // departure-side coverage) and the last ends at the arrival phase (overlaps
+    // arrival-side coverage); adjacent sectors meet at the mid-cruise handoff.
     const depStart = DateTime.fromISO(dep.start, { zone: 'utc' })
+    const depEnd = DateTime.fromISO(dep.end, { zone: 'utc' })
     const duration = plan.flightDurationMinutes
-    baseStart = depStart.plus({ minutes: duration * 0.2 })
-    baseEnd = depStart.plus({ minutes: duration * 0.8 })
+
+    const enroute = (facilities ?? [facility]).filter(f => f.type === 'ENROUTE')
+    const n = Math.max(enroute.length, 1)
+    const i = Math.max(enroute.findIndex(f => f.id === facility.id), 0)
+
+    baseStart = depStart.plus({ minutes: duration * (i / n) })
+    baseEnd = depEnd.plus({ minutes: duration * ((i + 1) / n) })
   }
 
   return {

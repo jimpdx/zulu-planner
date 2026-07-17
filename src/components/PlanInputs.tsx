@@ -1,5 +1,5 @@
 import { usePlan } from '../context/PlanContext'
-import { computeDepartureWindow, computeArrivalWindow, isValidTime } from '../utils/coverage'
+import { computeDepartureWindow, computeArrivalWindow, isValidTime, windowDurationMinutes, LONG_DEP_WINDOW_MINUTES } from '../utils/coverage'
 import { formatUtcWindow } from '../utils/timezone'
 import { ShareButton } from './ShareButton'
 
@@ -23,12 +23,17 @@ export function PlanInputs() {
 
   let depDisplay = ''
   let arrDisplay = ''
+  let longDepWindowHours = 0
   if (hasValidInputs) {
     try {
       const dep = computeDepartureWindow(plan)
       const arr = computeArrivalWindow(plan)
       depDisplay = formatUtcWindow(dep.start, dep.end)
       arrDisplay = formatUtcWindow(arr.start, arr.end)
+      const depMinutes = windowDurationMinutes(dep)
+      if (depMinutes > LONG_DEP_WINDOW_MINUTES) {
+        longDepWindowHours = Math.round(depMinutes / 60 * 10) / 10
+      }
     } catch { /* incomplete inputs */ }
   }
 
@@ -158,6 +163,12 @@ export function PlanInputs() {
             <div className="text-base font-semibold text-white">Arrivals Window</div>
             <div className="text-sm font-mono text-amber-300/80">{arrDisplay}</div>
           </div>
+        </div>
+      )}
+
+      {longDepWindowHours > 0 && (
+        <div className="mt-2 text-sm text-amber-400 text-center">
+          Departure window is {longDepWindowHours}h — did you mean to cross midnight? Check your start/end times.
         </div>
       )}
     </div>

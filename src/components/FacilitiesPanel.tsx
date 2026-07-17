@@ -132,7 +132,7 @@ export function FacilitiesPanel() {
             let coverage = null
             if (hasValidPlan) {
               try {
-                const window = computeFacilityCoverage(facility, plan)
+                const window = computeFacilityCoverage(facility, plan, facilities)
                 const localStart = toLocalDisplay(window.start, facility.timezone)
                 const localEnd = toLocalDisplay(window.end, facility.timezone)
                 coverage = {

@@ -129,7 +129,7 @@ export function ControllersPanel() {
                 const facility = facilities.find(f => f.id === controller.facilityId)
                 if (!facility) return null
                 try {
-                  const window = computeFacilityCoverage(facility, plan)
+                  const window = computeFacilityCoverage(facility, plan, facilities)
                   const shiftMinutes = controller.preferredShiftMinutes || plan.defaultShiftMinutes
                   const shifts = splitIntoShifts(window, shiftMinutes)
 
