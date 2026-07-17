@@ -5,11 +5,10 @@ import { ControllersPanel } from './components/ControllersPanel'
 import { Timeline } from './components/Timeline'
 
 function AppContent() {
-  const { dispatch } = usePlan()
+  const { resetPlan } = usePlan()
 
   function handleReset() {
-    dispatch({ type: 'RESET' })
-    window.history.pushState(null, '', '/events/')
+    resetPlan()
   }
 
   return (
@@ -58,7 +57,7 @@ function AppContent() {
         <Timeline />
 
         <footer className="text-center text-xs text-text/40 py-4">
-          v1.2.1
+          v1.3.0
         </footer>
       </div>
   )

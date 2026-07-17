@@ -93,6 +93,7 @@ interface PlanContextValue {
   state: PlanState
   dispatch: React.Dispatch<Action>
   isSharedPlan: boolean
+  resetPlan: () => void
 }
 
 const PlanContext = createContext<PlanContextValue | null>(null)
@@ -115,17 +116,28 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    if (!loading) {
+    // Never persist a shared plan over the local user's own saved plan.
+    // A shared snapshot belongs to whoever created it; only the user's own
+    // edits should be written to localStorage.
+    if (!loading && !isSharedPlan) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
     }
-  }, [state, loading])
+  }, [state, loading, isSharedPlan])
+
+  // Start a fresh, local plan. Clears the shared-plan flag so subsequent edits
+  // persist again and the URL no longer points at someone else's snapshot.
+  function resetPlan() {
+    dispatch({ type: 'RESET' })
+    setIsSharedPlan(false)
+    window.history.pushState(null, '', BASE_PATH)
+  }
 
   if (loading) {
     return <div className="text-center text-text/60 py-12">Loading shared plan...</div>
   }
 
   return (
-    <PlanContext.Provider value={{ state, dispatch, isSharedPlan }}>
+    <PlanContext.Provider value={{ state, dispatch, isSharedPlan, resetPlan }}>
       {children}
     </PlanContext.Provider>
   )

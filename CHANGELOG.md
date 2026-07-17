@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0
+
+Shared-plan persistence fixes.
+
+- Fixed shared plans overwriting your own saved plan: opening a `/events/<id>` share link no longer writes the shared snapshot into your localStorage
+- "New Plan" and the header title now clear the shared-plan state, so a fresh plan persists again and the "Shared by" label reverts to "Created by"
+- Consolidated the three reset entry points (New Plan button, header title, shared-plan flag) into a single `resetPlan()` action
+
 ## 1.2.1
 
 Timezone picker improvements.

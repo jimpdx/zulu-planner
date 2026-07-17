@@ -4,7 +4,7 @@ import { formatUtcWindow } from '../utils/timezone'
 import { ShareButton } from './ShareButton'
 
 export function PlanInputs() {
-  const { state, dispatch, isSharedPlan } = usePlan()
+  const { state, dispatch, isSharedPlan, resetPlan } = usePlan()
   const { plan } = state
 
   const update = (payload: Partial<typeof plan>) => {
@@ -38,10 +38,7 @@ export function PlanInputs() {
         <h2 className="text-lg font-semibold text-accent">Plan Inputs</h2>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => {
-              dispatch({ type: 'RESET' })
-              window.history.pushState(null, '', '/events/')
-            }}
+            onClick={resetPlan}
             className="text-sm bg-gray-600 text-white hover:bg-gray-500 px-3 py-1 rounded transition-colors"
           >
             New Plan
