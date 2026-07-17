@@ -51,6 +51,11 @@ export function computeFacilityCoverage(
   plan: Plan,
   facilities?: Facility[],
 ): TimeWindow {
+  // A manual override (set by dragging the bar) wins over any computed window.
+  if (facility.manualWindow) {
+    return facility.manualWindow
+  }
+
   const dep = computeDepartureWindow(plan)
   const arr = computeArrivalWindow(plan)
 

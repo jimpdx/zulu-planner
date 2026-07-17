@@ -18,6 +18,9 @@ export interface Facility {
   type: FacilityType
   leadMinutes: number
   lagMinutes: number
+  // When set (via dragging the bar on the timeline), overrides the computed
+  // coverage window with these absolute UTC times. Cleared by "reset to auto".
+  manualWindow?: TimeWindow
 }
 
 export interface Controller {

@@ -2,11 +2,13 @@
 
 ## 1.4.0
 
-Timeline readability, enroute sectors, and input safeguards.
+Draggable timeline, enroute sectors, and input safeguards.
 
+- Timeline facility bars are now draggable: drag the body to move a coverage window or an edge to resize it, snapping to 30-minute increments. The cursor shows a resize arrow over the edges and a grab hand over the middle. Adjusted bars are marked with a pencil (✎) and can be reset to the auto-computed window
 - Enroute facilities now split the cruise into sequential sectors (in add-order) instead of all sharing one fixed 20-80% slice: the first sector overlaps the departure phase, the last overlaps the arrival phase, and adjacent sectors overlap at the mid-cruise handoff
 - Timeline facility bars now show each facility's local coverage range inline (e.g. `ZAK (1500-2100 local)`), translated from Zulu to the facility's own timezone
 - Renamed the top two timeline bars to "Departure Window" and "Arrival Window" for clarity
+- Fixed the timeline Span footer dropping the end date on windows that cross midnight UTC
 - Warn when a departure window exceeds 12 hours (usually a start/end typo that triggers an unintended midnight rollover); the plan still computes, the warning is advisory only
 
 ## 1.3.0
